@@ -6,6 +6,11 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.*;
 
+import com.quickblox.core.QBEntityCallback;
+import com.quickblox.core.exception.QBResponseException;
+import com.quickblox.users.QBUsers;
+import com.quickblox.users.model.QBUser;
+
 public class MainActivity extends AppCompatActivity {
 
     private static final String APP_ID = "77080";
@@ -33,6 +38,28 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 startActivity(new Intent(MainActivity.this, SignUpActivity.class));
             }//end onClick()
+        });
+
+        btnLogin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String user = editUser.getText().toString();
+                String password = editPassword.getText().toString();
+
+                QBUser qbUser = new QBUser(user, password);
+
+                QBUsers.signIn(qbUser).performAsync(new QBEntityCallback<QBUser>() {
+                    @Override
+                    public void onSuccess(QBUser qbUser, Bundle bundle) {
+
+                    }//end onSuccess()
+
+                    @Override
+                    public void onError(QBResponseException e) {
+
+                    }//end onError()
+                });
+            }//end OnClick()
         });
 
     }//end onClick
