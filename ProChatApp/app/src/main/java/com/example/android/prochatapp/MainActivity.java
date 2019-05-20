@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.*;
 
+import com.quickblox.auth.session.QBSettings;
 import com.quickblox.core.QBEntityCallback;
 import com.quickblox.core.exception.QBResponseException;
 import com.quickblox.users.QBUsers;
@@ -26,8 +27,10 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        initializeFramework();
+
         //initialize the buttons and textinputs
-        btnLogin = (Button) findViewById(R.id.main_btbLogin);
+        btnLogin = (Button) findViewById(R.id.main_btnLogin);
         btnSignUp = (Button) findViewById(R.id.main_btnSignUp);
 
         editUser = (EditText) findViewById(R.id.main_editLogin);
@@ -52,15 +55,25 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onSuccess(QBUser qbUser, Bundle bundle) {
 
+                        Toast.makeText(MainActivity.this, "Login Successful", Toast.LENGTH_SHORT).show();
+
                     }//end onSuccess()
 
                     @Override
                     public void onError(QBResponseException e) {
+
+                        Toast.makeText(MainActivity.this, "Login Successful", Toast.LENGTH_SHORT).show();
 
                     }//end onError()
                 });
             }//end OnClick()
         });
 
-    }//end onClick
+    }//end onCreate()
+
+    private void initializeFramework(){
+        QBSettings.getInstance().init(getApplicationContext(),APP_ID,AUTH_KEY,AUTH_SECRET);
+        QBSettings.getInstance().setAccountKey(ACCOUNT_KEY);
+    }
+
 }//end class
