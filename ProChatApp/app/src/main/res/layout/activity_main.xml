@@ -61,7 +61,7 @@
 
         <Button
             android:layout_weight="1"
-            android:id="@+id/main_btbLogin"
+            android:id="@+id/main_btnLogin"
             android:background="@color/colorPrimaryDark"
             android:textColor="@color/colorAccent"
             android:text="Login"
