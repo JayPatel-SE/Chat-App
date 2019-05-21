@@ -46,8 +46,8 @@ public class MainActivity extends AppCompatActivity {
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String user = editUser.getText().toString();
-                String password = editPassword.getText().toString();
+                final String user = editUser.getText().toString();
+                final String password = editPassword.getText().toString();
 
                 QBUser qbUser = new QBUser(user, password);
 
@@ -57,6 +57,10 @@ public class MainActivity extends AppCompatActivity {
 
                         Toast.makeText(MainActivity.this, "Login Successful", Toast.LENGTH_SHORT).show();
 
+                        Intent intent = new Intent(MainActivity.this,ChatDialogsActivity.class);
+                        intent.putExtra("user",user);
+                        intent.putExtra("password",password);
+                        startActivity(intent);
                     }//end onSuccess()
 
                     @Override
