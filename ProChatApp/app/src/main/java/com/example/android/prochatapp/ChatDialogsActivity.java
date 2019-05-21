@@ -1,12 +1,15 @@
 package com.example.android.prochatapp;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.ListView;
 
+import com.example.android.prochatapp.Adapter.ChatDialogsAdapters;
 import com.quickblox.auth.QBAuth;
 import com.quickblox.auth.session.BaseService;
 import com.quickblox.auth.session.QBSession;
@@ -26,6 +29,13 @@ public class ChatDialogsActivity extends AppCompatActivity {
     FloatingActionButton floatingActionButton;
     ListView lstChatDialogs;
 
+
+    @Override
+    protected void onResume(){
+        super.onResume();
+        loadCharDialogs();
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,7 +44,18 @@ public class ChatDialogsActivity extends AppCompatActivity {
 
         createSessionForChat();
 
+        lstChatDialogs = (ListView)findViewById(R.id.lstChatDialogs);
+
         loadCharDialogs();
+
+        floatingActionButton = (FloatingActionButton) findViewById(R.id.chatdialog_adduser);
+        floatingActionButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(ChatDialogsActivity.this,ListUsersActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
     private void loadCharDialogs() {
@@ -45,12 +66,16 @@ public class ChatDialogsActivity extends AppCompatActivity {
         QBRestChatService.getChatDialogs(null,requestBuilder).performAsync(new QBEntityCallback<ArrayList<QBChatDialog>>() {
             @Override
             public void onSuccess(ArrayList<QBChatDialog> qbChatDialogs, Bundle bundle) {
-                //code later
+
+                ChatDialogsAdapters adapters = new ChatDialogsAdapters(getBaseContext(),qbChatDialogs);
+                lstChatDialogs.setAdapter(adapters);
+                adapters.notifyDataSetChanged();
+
             }
 
             @Override
             public void onError(QBResponseException e) {
-
+                Log.e("ERROR",e.getMessage());
             }
         });
     }
